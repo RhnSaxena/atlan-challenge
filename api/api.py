@@ -1,6 +1,6 @@
 import flask
-
-# import process_thread
+import json
+from flask import Response, request
 from handler import Handler
 
 app = flask.Flask(__name__)
@@ -9,54 +9,34 @@ app.config["DEBUG"] = True
 handler = Handler()
 
 
-# def handler(request):
-
-#     if request["method"] is "main":
-#         return globals()[request["method"]](request)
-#     elif request["method"] is "thread_stop":
-#         message = globals()[request["method"]]()
-#         del current_object
-#         return message
-#     else:
-#         return globals()[request["method"]]()
-
-
-@app.route("/", methods=["GET"])
+@app.route("/status", methods=["GET"])
 def status():
-    # request = {}
-    # request["method"] = "get_status"
-    return handler.get_status()
+    data = handler.get_status()
+    return Response(json.dumps({"Details": data["message"]}), status=data["code"])
 
 
-@app.route("/", methods=["POST"])
+@app.route("/create", methods=["POST"])
 def create_process():
-    # request = {}
-    # request["method"] = "main"
-    return handler.create_thread("request")
+    data = handler.create_thread(request.files["file"])
+    return Response(json.dumps({"Details": data["message"]}), status=data["code"])
 
 
 @app.route("/pause", methods=["GET"])
 def pause_process():
-    # request = {}
-    # request["method"] = "thread_pause"
-    return handler.thread_pause()
-    # return thread_pause()
+    data = handler.thread_pause()
+    return Response(json.dumps({"Details": data["message"]}), status=data["code"])
 
 
 @app.route("/resume", methods=["GET"])
 def resume_process():
-    # request = {}
-    # request["method"] = "thread_resume"
-    return handler.thread_resume()
-    # return thread_resume()
+    data = handler.thread_resume()
+    return Response(json.dumps({"Details": data["message"]}), status=data["code"])
 
 
 @app.route("/stop", methods=["GET"])
 def stop_process():
-    # request = {}
-    # request["method"] = "thread_stop"
-    return handler.thread_stop()
-    # return thread_stop()
+    data = handler.thread_stop()
+    return Response(json.dumps({"Details": data["message"]}), status=data["code"])
 
 
 app.run()

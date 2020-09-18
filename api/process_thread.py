@@ -2,60 +2,36 @@ class Process:
     def __init__(self):
         self._running = True
         self._terminate = False
+        self._current_row = 0
+        self._total_row = 0
 
     def pause(self):
         self._running = False
-        return {"Message": "Process paused."}
+        return "Process paused."
 
     def resume(self):
         self._running = True
-        return {"Message": "Process resumed."}
+        return "Process resumed."
 
     def terminate(self):
         self._terminate = True
-        return {"Message": "Process stopped."}
+        return "Process stopped."
 
-    def run(self):
-        i = 0
+    def getState(self):
+        if self._running is True:
+            return "running"
+        elif self._running is False:
+            return "paused"
+
+    def run(self, file):
+        row = 0
+        total_row = 100
         while not self._terminate:
-            print(str(i) + "\n")
-            i = i + 1
+            # print(i)
+            row = row + 1
             while not self._running:
-                print("paused")
                 if self._terminate:
                     break
+            if row > total_row:
+                self.terminate()
         print("stopped")
-
-
-# def create_thread(request):
-
-#     if not current_object:
-#         process = Process()
-#         current_object = process
-#         process_thread = threading.Thread(target=current_object.run)
-#         process_thread.start()
-#         return {"Message": "Process started successfully."}
-#     else:
-#         return {
-#             "Message": "A file already in process. Wait till the process gets completed or try stopping the current process."
-#         }
-
-
-# def thread_pause():
-#     return current_object.pause()
-
-
-# def thread_resume():
-#     return current_object.resume()
-
-
-# def thread_stop():
-#     return current_object.terminate()
-
-
-# def get_status():
-
-#     if not current_object:
-#         return {"Message": "No active process."}
-#     else:
-#         return {"Message": "An active process."}
