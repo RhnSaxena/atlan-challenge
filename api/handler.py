@@ -9,7 +9,7 @@ class Handler:
     def __init__(self):
         self.__current_process = None
 
-    def getState(self):
+    def get_state(self):
         if not self.__current_process:
             return False
         elif self.__current_process._terminate:
@@ -20,7 +20,7 @@ class Handler:
     # To start a new process, handles the route POST '/'
     def create_thread(self, file):
 
-        if not self.getState():
+        if not self.get_state():
             self.__current_process = Process()
             process_thread = threading.Thread(
                 target=self.__current_process.run, kwargs=dict(file=file)
@@ -36,26 +36,26 @@ class Handler:
     # To get the status of the process, handles the route GET '/'
     def get_status(self):
 
-        if not self.getState():
+        if not self.get_state():
             return {"message": "No active process.", "code": 200}
         else:
             return {
                 "message": "An active process, currently {state} ".format(
-                    state=self.__current_process.getState()
+                    state=self.__current_process.get_state()
                 ),
                 "code": 200,
             }
 
     # To pause the process, handles the route GET '/pause'
     def thread_pause(self):
-        if not self.getState():
+        if not self.get_state():
             return {"message": "No active process.", "code": 403}
         else:
             return {"message": self.__current_process.pause(), "code": 200}
 
     # To resume the process, handles the route GET '/resume'
     def thread_resume(self):
-        if not self.getState():
+        if not self.get_state():
             return {"message": "No active process.", "code": 403}
         else:
             return {"message": self.__current_process.resume(), "code": 200}
@@ -63,7 +63,7 @@ class Handler:
     # To stop the process, handles the route GET '/stop'
     def thread_stop(self):
 
-        if not self.getState():
+        if not self.get_state():
             return {"message": "No active process.", "code": 403}
         else:
             message = self.__current_process.terminate()

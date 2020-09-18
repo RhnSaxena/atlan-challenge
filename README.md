@@ -19,9 +19,9 @@ The projects has been developed as a REST API. The various functionalities has b
 
 The various endpoints are :
 
-- `GET /` : To get the current status of procees. If no active process exist, it return `No active process`.
+- `GET /status` : To get the current status of procees. If no active process exist, it return `No active process`.
 
-- `POST /create` : To start a new process, create a POST Request at this endpoint along with the CSV file in formdata.
+- `POST /create` : To start a new process, create a POST Request at this endpoint along with the CSV file in form data, with `file` as key.
 
 - `GET /pause` : To pause the in-progress running process, create a POST Request at this endpoint.
 

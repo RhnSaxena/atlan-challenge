@@ -17,21 +17,21 @@ class Process:
         self._terminate = True
         return "Process stopped."
 
-    def getState(self):
+    def get_state(self):
         if self._running is True:
             return "running"
         elif self._running is False:
             return "paused"
 
     def run(self, file):
-        row = 0
-        total_row = 100
+        self._current_row = 0
+        self._total_row = 100000
         while not self._terminate:
-            # print(i)
-            row = row + 1
+            print(self._current_row)
+            self._current_row = self._current_row + 1
             while not self._running:
                 if self._terminate:
                     break
-            if row > total_row:
+            if self._current_row > self._total_row:
                 self.terminate()
         print("stopped")
