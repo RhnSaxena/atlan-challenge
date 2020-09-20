@@ -11,52 +11,50 @@ class Process:
         self._current_row = 0
         self._total_row = 0
 
-    def pause(self):
-        self._running = False
-        return "Process paused. Completed {} on line no {}".format(
-            (self._current_row / self._total_row) * 100, self._current_row
-        )
-
-    def resume(self):
-        self._running = True
-        return "Process resumed."
-
-    def terminate(self):
-        self._terminate = True
-        return "Process stopped."
-
     def get_state(self):
         if self._running is True:
             return "running"
         elif self._running is False:
             return "paused"
 
-    def run(self, file):
+    def progress(self):
+        return "Completed {}%, currently on row number {}.".format(
+            round((self._current_row / self._total_row) * 100, 2), self._current_row
+        )
+
+    def resume(self):
+        self._running = True
+        return "Process resumed. {}".format(self.progress())
+
+    def pause(self):
+        self._running = False
+        return "Process paused. {}".format(self.progress())
+
+    def terminate(self):
+        self._terminate = True
+        return "Process stopped at row number {}. Completed {}% processing.".format(
+            self._current_row, self.progress()
+        )
+
+    def run(self, filename):
 
         tempfile = NamedTemporaryFile(mode="w", delete=False, newline="")
-        with file.read(), tempfile:
-            reader = csv.DictReader(file.stream)
-            self._current_row = 1
-            # self._total_row = 20000
-            self._total_row = len(reader)
+        with open(filename, "r") as csv_file, tempfile:
+            reader = csv.DictReader(csv_file)
+            rows = list(reader)
+            self._total_row = len(rows)
             fields = reader.fieldnames
             fields = {fields[1]: fields[1], fields[0]: fields[0], fields[2]: fields[2]}
             writer = csv.DictWriter(tempfile, fieldnames=fields)
             writer.writerow(fields)
 
             while not self._terminate:
-                print(reader[self._current_row])
-                writer.writerow(reader[self._current_row])
+                writer.writerow(rows[self._current_row])
                 self._current_row = self._current_row + 1
-                time.sleep(0.10)
-                # self._current_row = self._current_row + 1
+                time.sleep(0.1)
                 while not self._running:
                     if self._terminate:
                         break
-                if self._current_row >= self._total_row - 1:
+                if self._current_row == self._total_row:
                     self.terminate()
-            print("stopped")
-
-        # filename = "employee_birthday.csv"
-
-        shutil.move(tempfile.name, file)
+        shutil.move(tempfile.name, filename)
