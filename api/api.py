@@ -2,9 +2,10 @@ import flask
 import json
 from flask import Response, request
 from handler import Handler
+import uuid
 
 app = flask.Flask(__name__)
-app.config["DEBUG"] = True
+# app.config["DEBUG"] = True
 
 handler = Handler()
 
@@ -17,8 +18,19 @@ def status():
 
 @app.route("/create", methods=["POST"])
 def create_process():
-    data = handler.create_thread(request.files["file"])
-    return Response(json.dumps({"Details": data["message"]}), status=data["code"])
+
+    if request.files["file"]:
+        filename = str(uuid.uuid4()) + ".csv"
+        request.files["file"].save(filename)
+        data = handler.create_thread(filename)
+        return Response(json.dumps({"Details": data["message"]}), status=data["code"])
+    else:
+        return Response(
+            json.dumps(
+                {"Details": "Please attach a file. Ensure that the key is 'file'"}
+            ),
+            status=403,
+        )
 
 
 @app.route("/pause", methods=["GET"])
