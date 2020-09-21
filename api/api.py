@@ -23,7 +23,7 @@ def status():
 
 @app.route("/create", methods=["POST"])
 def create_process():
-    if request.files["file"]:
+    if "file" in request.files.keys():
         filename = str(uuid.uuid4()) + ".csv"
         request.files["file"].save(filename)
         data = handler.create_thread(filename)
