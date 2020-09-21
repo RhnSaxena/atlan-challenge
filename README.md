@@ -43,29 +43,36 @@ The process thread performs the actual processing on the CSV file. The `run` fun
 
 ### Installation
 
+Please clone the repository and follow one of the following deployment method.
+
 #### Docker
 
 The project can be directly run in a container environment using the docker image.
 
 Steps:
 
-<ol>
-<li>Build the image</li>
-`docker build -t atlan-flask:latest .`
-<li>Run the image in a container</li>
-`docker run -it  -d -p 5000:5007 atlan-flask`
-<br>Here the ports 5000 and 5007 corresponds to the local and container port respectively.
-</ol>
+- Build the image
+```
+  docker build -t atlan-flask:latest . 
+```
+- Run the image in a container
+```
+  docker run -it  -d -p 5000:5007 atlan-flask
+```
+Here the ports 5000 and 5007 corresponds to the local and container port respectively.
+
 
 #### Local Setup
 
-The project can be run directly on the local environment.
+The project can also run on the local environment.
 
 Steps:
 
-<ol>
-<li> Install the requirements</li>
-`pip install -r requirements.txt`
-<li> Start the app</li>
-`python3 ./api/api.py'
-</ol>
+- Install the requirements
+```
+pip install -r requirements.txt
+```
+- Start the app
+```
+python3 ./api/api.py
+```
