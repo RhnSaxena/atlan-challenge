@@ -10,7 +10,7 @@ COPY . /api
 
 RUN pip3 --no-cache-dir install -r requirements.txt
 
-EXPOSE 5000
+EXPOSE 5007
 
 ENTRYPOINT ["python3"]
 CMD ["./api/api.py"]
