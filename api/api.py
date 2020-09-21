@@ -7,8 +7,13 @@ import uuid
 app = flask.Flask(__name__)
 # app.config["DEBUG"] = True
 
+
+# The Handler object
+# The Handler contains the proper controller functions for the routes.
 handler = Handler()
 
+# The various routes are defined below which call their respective handler functions.
+# After receiving response from the handler, they return the response with appropriate response code.
 
 @app.route("/status", methods=["GET"])
 def status():
@@ -18,7 +23,6 @@ def status():
 
 @app.route("/create", methods=["POST"])
 def create_process():
-
     if request.files["file"]:
         filename = str(uuid.uuid4()) + ".csv"
         request.files["file"].save(filename)
@@ -31,7 +35,6 @@ def create_process():
             ),
             status=403,
         )
-
 
 @app.route("/pause", methods=["GET"])
 def pause_process():
@@ -51,4 +54,4 @@ def stop_process():
     return Response(json.dumps({"Details": data["message"]}), status=data["code"])
 
 
-app.run(host='0.0.0.0', port=5007)
+app.run(host='127.0.0.1', port=5007)
