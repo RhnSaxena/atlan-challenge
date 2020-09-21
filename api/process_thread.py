@@ -4,6 +4,12 @@ import csv
 import time
 
 
+# The Process class includes attributes and function to process a CSV file.
+# The run method is the target function for the thread.
+
+# The run function continuously polls the self._running & self._terminate attribute 
+# to resume,stop,pause the current process
+
 class Process:
     def __init__(self):
         self._running = True
