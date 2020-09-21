@@ -33,7 +33,7 @@ class Process:
     def terminate(self):
         self._terminate = True
         return "Process stopped at row number {}. Completed {}% processing.".format(
-            self._current_row, self.progress()
+            self._current_row, round((self._current_row / self._total_row) * 100, 2)
         )
 
     def run(self, filename):
@@ -44,7 +44,7 @@ class Process:
             rows = list(reader)
             self._total_row = len(rows)
             fields = reader.fieldnames
-            fields = {fields[1]: fields[1], fields[0]: fields[0], fields[2]: fields[2]}
+            fields = {fields[1]: fields[1], fields[0]: fields[0]}
             writer = csv.DictWriter(tempfile, fieldnames=fields)
             writer.writerow(fields)
 
