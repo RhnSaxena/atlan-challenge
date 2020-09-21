@@ -51,4 +51,4 @@ def stop_process():
     return Response(json.dumps({"Details": data["message"]}), status=data["code"])
 
 
-app.run()
+app.run(host='0.0.0.0', port=5007)
